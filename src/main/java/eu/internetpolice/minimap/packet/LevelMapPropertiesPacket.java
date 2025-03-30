@@ -1,10 +1,20 @@
 package eu.internetpolice.minimap.packet;
 
-import io.netty.buffer.Unpooled;
 import net.minecraft.network.FriendlyByteBuf;
+import org.bukkit.World;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Random;
 
 public class LevelMapPropertiesPacket extends AbstractPacket {
-    private final int id = 123456789;
+    protected final int id;
+
+    public LevelMapPropertiesPacket(World world) {
+        id = readMapProperties(world.getWorldFolder());
+    }
 
     @Override
     protected byte getPacketId() {
@@ -13,9 +23,29 @@ public class LevelMapPropertiesPacket extends AbstractPacket {
 
     @Override
     public byte[] encode() {
-        FriendlyByteBuf buffer = new FriendlyByteBuf(Unpooled.buffer());
-        buffer.writeByte(getPacketId());
+        FriendlyByteBuf buffer = getPacket();
         buffer.writeInt(id);
         return encodeBuffer(buffer);
+    }
+
+    protected int readMapProperties(File worldDirectory) {
+        int rand = new Random().nextInt(Integer.MAX_VALUE);
+        try {
+            Path propertiesFile = worldDirectory.toPath().resolve("xaeromap.txt");
+            if (Files.exists(propertiesFile)) {
+                for (String line : Files.readAllLines(propertiesFile)) {
+                    if (line.startsWith("id:")) {
+                        String id = line.split(":")[1];
+                        try {
+                            return Integer.parseInt(id);
+                        } catch (NumberFormatException ignored) {}
+                    }
+                }
+            }
+
+            Files.writeString(propertiesFile, "id:" + rand);
+        } catch (IOException ignored) {}
+
+        return rand;
     }
 }

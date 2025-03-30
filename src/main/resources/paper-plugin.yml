@@ -3,3 +3,4 @@ version: 1.0.0
 main: eu.internetpolice.minimap.XaeroMinimapPaper
 description: Xaero Minimap support for Paper servers
 api-version: '1.21.4'
+loader: eu.internetpolice.minimap.XaeroMinimapLoader

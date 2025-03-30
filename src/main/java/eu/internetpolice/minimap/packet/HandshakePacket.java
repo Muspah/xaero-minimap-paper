@@ -1,6 +1,5 @@
 package eu.internetpolice.minimap.packet;
 
-import io.netty.buffer.Unpooled;
 import net.minecraft.network.FriendlyByteBuf;
 
 public class HandshakePacket extends AbstractPacket {
@@ -25,8 +24,7 @@ public class HandshakePacket extends AbstractPacket {
 
     @Override
     public byte[] encode() {
-        FriendlyByteBuf buffer = new FriendlyByteBuf(Unpooled.buffer());
-        buffer.writeByte(getPacketId());
+        FriendlyByteBuf buffer = getPacket();
         buffer.writeInt(this.networkVersion);
         return encodeBuffer(buffer);
     }

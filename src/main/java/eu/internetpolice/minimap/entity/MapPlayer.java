@@ -7,6 +7,7 @@ import eu.internetpolice.minimap.packet.ClientboundRulesPacket;
 import eu.internetpolice.minimap.packet.HandshakePacket;
 import eu.internetpolice.minimap.packet.LevelMapPropertiesPacket;
 import org.bukkit.entity.Player;
+import org.spongepowered.configurate.CommentedConfigurationNode;
 
 import java.util.concurrent.TimeUnit;
 
@@ -67,12 +68,18 @@ public class MapPlayer {
     }
 
     protected void sendLevelProperties() {
-        LevelMapPropertiesPacket packet = new LevelMapPropertiesPacket();
+        LevelMapPropertiesPacket packet = new LevelMapPropertiesPacket(getPaperPlayer().getWorld());
         sendPacket(packet);
     }
 
     protected void sendClientRules() {
-        ClientboundRulesPacket packet = new ClientboundRulesPacket();
+        CommentedConfigurationNode node = plugin.getConfiguration().node("gamerules");
+
+        ClientboundRulesPacket packet = new ClientboundRulesPacket(
+            node.node("allowCaveMode").getBoolean(false),
+            node.node("allowNetherCaveMode").getBoolean(false),
+            node.node("allowRadar").getBoolean(false)
+        );
         sendPacket(packet);
     }
 

@@ -1,6 +1,5 @@
 package eu.internetpolice.minimap.packet;
 
-import io.netty.buffer.Unpooled;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import org.bukkit.Location;
@@ -53,8 +52,7 @@ public class ClientboundTrackedPlayerPacket extends AbstractPacket {
             }
         }
 
-        FriendlyByteBuf buffer = new FriendlyByteBuf(Unpooled.buffer());
-        buffer.writeByte(getPacketId());
+        FriendlyByteBuf buffer = getPacket();
         buffer.writeNbt(nbt);
 
         return encodeBuffer(buffer);

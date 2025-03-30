@@ -1,0 +1,6 @@
+gamerules:
+  allowCaveMode: true
+  allowNetherCaveMode: true
+  allowRadar: true
+radar:
+  everyoneTracksEveryone: true
