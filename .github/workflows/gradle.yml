@@ -35,6 +35,7 @@ jobs:
         if: ${{ github.event_name == 'push' }}
         with:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: ${{ secrets.SSH_KNOWN_HOST }}
       # Mark our scripts runnable:
       - name: Mark deploy script runnable
         if: ${{ github.event_name == 'push' }}
