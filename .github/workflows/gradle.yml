@@ -27,8 +27,10 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       - name: Make gradlew executable
         run: chmod +x ./gradlew
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
       - name: Build with gradle
-        run: ./gradlew build
+        run: ./gradlew clean build -d
       # Install our SSH key:
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
